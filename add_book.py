@@ -2,6 +2,7 @@ from tkinter import *
 
 def add_books(home,add_book):
         add_book.configure(background='black')
+        Label(add_book,text='Add Book',bg='black', fg='white', font=('Courier',35)).pack(pady=15)
         Label(add_book,text='Book Id',bg='black', fg='white', font=('Courier',25)).pack(pady=5)
         Text(add_book,height = 1,width = 30,font=('Courier',25)).pack(pady=5)
         Label(add_book,text='Name',bg='black', fg='white', font=('Courier',25)).pack(pady=5)
