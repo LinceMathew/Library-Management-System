@@ -32,14 +32,13 @@ def add_book_query(id,name,category,author,count):
         count=count.get(1.0, "end-1c")
         print(book_id,name,category,author,count)
         insert="insert into Books values("+book_id+",'"+name+"','"+author+"', '"+category+"',"+count+","+count+");"
-        print(insert)
+
       
-        con=pymysql.connect(host="localhost",user="root",database="LMS")
-        cur=con.cursor()
+        
         try:
-                cur.execute(insert)
-                con.commit()
+                connect(insert)
                 messagebox.showinfo('Success',"Book added successfully")
         except(pymysql.Error, pymysql.Warning) as e:
                 print(e)
-                messagebox.showinfo("Error","Can't add data into Database")
+                err=str(e)
+                messagebox.showinfo("Error","Can't add data into Database "+err)
