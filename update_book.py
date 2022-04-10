@@ -27,38 +27,54 @@ def detailed_update(update_book,output):
     Label(update_book,text='Total Count',bg='black', fg='white', font=('Courier',25)).pack(pady=5)
     t_count=Text(update_book,height = 1,width = 30,font=('Courier',25))
     t_count.pack()
-    Label(update_book,text='Available Count',bg='black', fg='white', font=('Courier',25)).pack(pady=5)
-    a_count=Text(update_book,height = 1,width = 30,font=('Courier',25))
-    a_count.pack()
-    display_details(name,author,category,t_count,a_count,output)
-    Button(update_book,text='update',bg='black', fg='white', font=('Courier',25)).pack(pady=12)
+    display_details(name,author,category,t_count,output)
+    Button(update_book,text='update',command=lambda:update_submit(name,author,category,t_count,output),bg='black', fg='white', font=('Courier',25)).pack(pady=12)
     
 def queryby_id(id,update_book):
     book_id=id.get(1.0, "end-1c")
     query="select * from Books where book_id="+book_id
     try:
         result=connect(query)
-        output=fetch_detail(result)
-        messagebox.showinfo("Success","enter new book details")
-        detailed_update(update_book,output)
+        if len(result)>0:
+            output=fetch_detail(result)
+            detailed_update(update_book,output)
+        else :
+            messagebox.showinfo("Error","Enter valid book_id")
     except(pymysql.Error, pymysql.Warning) as e:
         err=str(e)
         messagebox.showinfo("Error","Can't add data into Database "+err)
 
-def display_details(name,author,category,t_count,a_count,output):
-    name.insert(INSERT,output[0])
-    author.insert(INSERT,output[1])
-    category.insert(INSERT,output[2])
-    t_count.insert(INSERT,output[3])
-    a_count.insert(INSERT,output[4])
+def display_details(name,author,category,t_count,output):
+    name.insert(INSERT,output[1])
+    author.insert(INSERT,output[2])
+    category.insert(INSERT,output[3])
+    t_count.insert(INSERT,output[4])
 
 def fetch_detail(result):
     for row in result:
+        id=row[0]
         name=row[1]
         author=row[2]
         cat_id=row[3]
         t_count=row[4]
         avail_count=row[5]
-    return [name,author,cat_id,t_count,avail_count]
+    return [id,name,author,cat_id,t_count,avail_count]
 
-
+def update_submit(name,author,category,t_count,output):
+    name=name.get(1.0, "end-1c")
+    author=author.get(1.0, "end-1c")
+    category=category.get(1.0, "end-1c")
+    t_count=t_count.get(1.0, "end-1c")
+    d=int(t_count)-output[4]
+    avail_count=output[5]
+    avail_count+=d
+    if d<0:
+        messagebox.showinfo("Error","New count is less than available ")
+    else:
+        query="update Books set name='"+name+"',aut_name='"+author+"',cat_id="+category+",t_count="+t_count+",avail_count="+str(avail_count)+" where book_id="+str(output[0])
+        try:
+            connect(query)
+            messagebox.showinfo("Success","Details updated successfully")
+        except(pymysql.Error, pymysql.Warning) as e:
+            err=str(e)
+            messagebox.showinfo("Error","Can't update the details of book "+err)
