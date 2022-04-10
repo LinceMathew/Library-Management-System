@@ -49,5 +49,3 @@ def home():
     landing()
     main.mainloop()  
 home()
-
-

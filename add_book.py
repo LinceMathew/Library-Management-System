@@ -2,7 +2,6 @@ from tkinter import *
 import pymysql
 from tkinter import messagebox
 from connect_db import connect
-from tkinter import messagebox
 def add_books(home,add_book):
         add_book.configure(background='black')
         Label(add_book,text='Add Book',bg='black', fg='white', font=('Courier',35)).pack(pady=15)
