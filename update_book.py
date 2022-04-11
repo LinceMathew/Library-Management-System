@@ -75,6 +75,7 @@ def update_submit(name,author,category,t_count,output):
         try:
             connect(query)
             messagebox.showinfo("Success","Details updated successfully")
+            
         except(pymysql.Error, pymysql.Warning) as e:
             err=str(e)
             messagebox.showinfo("Error","Can't update the details of book "+err)
