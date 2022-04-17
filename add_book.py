@@ -38,6 +38,5 @@ def add_book_query(id,name,category,author,count):
                 connect(insert)
                 messagebox.showinfo('Success',"Book added successfully")
         except(pymysql.Error, pymysql.Warning) as e:
-                print(e)
                 err=str(e)
                 messagebox.showinfo("Error","Can't add data into Database "+err)
